@@ -1,0 +1,18 @@
+[package]
+name = "SpruceID-TakeHomeAssignment"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+reqwest = {version = "0.12.15", features = ["blocking"]}
+ring = "0.17.14"
+rocket = "0.5.1"
+serde = {version = "1.0.219", features = ["derive"]}
+serde_json = "1.0.140"
+
+[dependencies.uuid]
+version = "1.16.0"
+# Lets you generate random UUIDs
+features = [
+    "v4",
+]
