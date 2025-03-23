@@ -118,7 +118,7 @@ fn verify_signature(payload: String, store: &NonceStoreRef) -> status::Custom<St
 #[launch]
 fn rocket() -> _ {
     // 5 seconds expiration time - just to make it easier to test
-    let nonce_store = NonceStore::new(1);
+    let nonce_store = NonceStore::new(5);
 
     rocket::build()
         .configure(rocket::Config {

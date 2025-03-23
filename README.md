@@ -66,7 +66,7 @@ that every nonce is unique. Even though it increases the server load and latency
 ### Holder
 
 The holder is a simple Rust script that generates a key pair, ask the verifier for a nonce,
-signs message + nonce, and sends the payload to the verifier.
+signs a simple text message (for simplicity), and sends the payload to the verifier.
 
 The payload includes:
 
@@ -78,4 +78,7 @@ The payload includes:
 Its strange to send the public key in the payload, in a real world I would assume
 that the verifier would already have the public key, but for the sake of this
 assignment, I decided to send it to make it easier.
+
+Also, generating a new key pair every time is not ideal, I'm doing like that
+to keep everything in memory, again for simplicity.
 
