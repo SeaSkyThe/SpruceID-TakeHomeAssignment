@@ -23,7 +23,7 @@ Advice:
 ## Setup
 
 1. Clone the repository
-2. Have Rust installed
+2. Have Rust installed (My cargo version is 1.85.0)
 3. Run `make build` to build both the holder and the verifier.
 3. Run `make run-verifier` to start the verifier in a terminal.
 4. In a new terminal, run `make run-holder` to start the holder.
