@@ -66,11 +66,6 @@ impl NonceStore {
         }
         false
     }
-
-    fn cleanup_expired_nonces(&mut self) {
-        self.nonces
-            .retain(|_, nonce_entry| nonce_entry.created_at.elapsed() < self.expiration_time);
-    }
 }
 
 type NonceStoreRef = rocket::State<Arc<Mutex<NonceStore>>>;
@@ -79,8 +74,6 @@ type NonceStoreRef = rocket::State<Arc<Mutex<NonceStore>>>;
 #[get("/nonce")]
 fn nonce(store: &NonceStoreRef) -> String {
     let mut store = store.lock().unwrap();
-
-    store.cleanup_expired_nonces();
 
     store.generate_nonce()
 }
@@ -98,11 +91,10 @@ fn verify_signature(payload: String, store: &NonceStoreRef) -> status::Custom<St
         })
         .unwrap();
 
-    // Verify the signature
+    // Extract the payload parts
     let message_bytes = payload.message.as_slice();
     let public_key_bytes = payload.public_key.as_slice();
     let signature_bytes = payload.signature.as_slice();
-
     let nonce = payload.nonce.as_str();
 
     if !store.verify_and_use_nonce(nonce) {
@@ -112,6 +104,7 @@ fn verify_signature(payload: String, store: &NonceStoreRef) -> status::Custom<St
     let holder_public_key =
         signature::UnparsedPublicKey::new(&signature::ED25519, public_key_bytes);
 
+    // Verify the signature
     if holder_public_key
         .verify(message_bytes, signature_bytes)
         .is_ok()
